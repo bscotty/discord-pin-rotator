@@ -1,0 +1,27 @@
+{
+  "name": "pin-rotator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint . --ext .ts",
+    "clean": "rm -rf build",
+    "build": "tsc -p .",
+    "run": "node build/src/main.js",
+    "cleanBuildRun": "rm -rf build && tsc -p . && cp src/datastore/guild-channels.json build/src/datastore/guild-channels.json || node build/src/main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/turndown": "^5.0.1",
+    "@typescript-eslint/eslint-plugin": "^5.28.0",
+    "@typescript-eslint/parser": "^5.28.0",
+    "eslint": "^8.17.0"
+  },
+  "dependencies": {
+    "discord.js": "^14.5.0"
+  }
+}
+
