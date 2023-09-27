@@ -121,6 +121,13 @@ export class BotClient {
             console.error(e)
         }
 
+        if (message.embeds.length > 0) {
+            const embedToCopy = message.embeds[0]
+            const footerText = embedToCopy.footer ? "\n\n" + embedToCopy.footer.text.replace("-", "\\-") : ""
+            const description = embedToCopy.description ? embedToCopy.description + footerText : "Error copying Haiku"
+            embed.addFields({name: "Original Embed", value: description, inline: false})
+        }
+
         if (message.content.length > 1024) {
             embed.addFields(
                 this.split(message.content).map((it, index) => {
