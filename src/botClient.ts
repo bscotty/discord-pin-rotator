@@ -142,8 +142,11 @@ export class BotClient {
 
         if (message.attachments.size > 0) {
             message.attachments.forEach((it) => {
-                if (this.hasImageExtension(it.url))
+                if (it.contentType.startsWith("image/")) {
                     embed.setImage(it.url)
+                } else if (this.hasImageExtension(it.url)) {
+                    embed.setImage(it.url)
+                }
             })
         }
 
