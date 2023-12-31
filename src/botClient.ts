@@ -69,7 +69,7 @@ export class BotClient {
                 await this.hallOfFame(interaction)
                     .catch(async (it) => {
                         console.error(it)
-                        // await interaction.reply("There was a problem moving that to the hall of fame.")
+                        await interaction.reply("There was a problem moving that to the hall of fame.")
                     })
             }
             if (commandName == SET_CHANNEL) {
@@ -100,10 +100,12 @@ export class BotClient {
             avatarUrl = "https://cdn.discordapp.com/attachments/301734382022950932/1025582339339862046/Discord_-_Erics_Icon.png"
         }
 
+        const linkToMessage = messageLink(channel.id, messageId, commandGuildId)
+
         const embed = new EmbedBuilder()
             .setThumbnail(avatarUrl)
             .setTitle("Hall of Fame Entry")
-            .setURL(messageLink(channel.id, messageId, commandGuildId))
+            .setURL(linkToMessage)
             .addFields(
                 {name: "Posted by", value: `${userMention(message.author.id)}`, inline: true},
                 {name: "Originally posted at", value: time(message.createdAt), inline: true}
@@ -162,7 +164,7 @@ export class BotClient {
                     await pin.unpin("Moving to the Hall of Fame")
                 }
             })
-        // await interaction.reply(`Adding message with id ${messageId} to the Hall of Fame!`)
+        await interaction.reply(`Adding message ${linkToMessage} to the Hall of Fame!`)
     }
 
     private split(response: string): string[] {
