@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "eslint . --ext .ts",
     "clean": "rm -rf build",
-    "build": "tsc -p .",
+    "build": "tsc -p . && cp src/datastore/guild-channels.json build/src/datastore/guild-channels.json",
     "run": "node build/src/main.js",
     "cleanBuildRun": "rm -rf build && tsc -p . && cp src/datastore/guild-channels.json build/src/datastore/guild-channels.json || node build/src/main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
