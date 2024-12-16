@@ -89,6 +89,7 @@ export class BotClient {
 
         const fetchedChannel = await channel.fetch() as TextChannel
         const message = await fetchedChannel.messages.fetch(messageId)
+        console.debug(`sending message to hall of fame: ${message.content}`)
 
         const guild = await this.client.guilds.fetch(commandGuildId)
 
@@ -125,9 +126,14 @@ export class BotClient {
 
         if (message.embeds.length > 0) {
             const embedToCopy = message.embeds[0]
-            const footerText = embedToCopy.footer ? "\n\n" + embedToCopy.footer.text.replace("-", "\\-") : ""
-            const description = embedToCopy.description ? embedToCopy.description + footerText : "Error copying Haiku"
-            embed.addFields({name: "Original Embed", value: description, inline: false})
+            const urlToCopy = embedToCopy.url
+            if (urlToCopy != null && urlToCopy.length > 0 && this.isImageUrl(urlToCopy)) {
+                embed.setImage(urlToCopy)
+            } else {
+                const footerText = embedToCopy.footer ? "\n\n" + embedToCopy.footer.text.replace("-", "\\-") : ""
+                const description = embedToCopy.description ? embedToCopy.description + footerText : "Error copying Haiku"
+                embed.addFields({name: "Original Embed", value: description, inline: false})
+            }
         }
 
         if (message.content.length > 1024) {
@@ -144,7 +150,7 @@ export class BotClient {
 
         if (message.attachments.size > 0) {
             message.attachments.forEach((it) => {
-                if (it.contentType.startsWith("image/")) {
+                if (it.contentType != null && it.contentType.startsWith("image/")) {
                     embed.setImage(it.url)
                 } else if (this.hasImageExtension(it.url)) {
                     embed.setImage(it.url)
@@ -196,11 +202,11 @@ export class BotClient {
 
     private hasImageExtension(content: string): boolean {
         return (
-            content.endsWith(".png") ||
-            content.endsWith(".gif") ||
-            content.endsWith(".jpg") ||
-            content.endsWith(".jpeg") ||
-            content.endsWith(".webm")
+            content.includes(".png") ||
+            content.includes(".gif") ||
+            content.includes(".jpg") ||
+            content.includes(".jpeg") ||
+            content.includes(".webm")
         )
     }
 
